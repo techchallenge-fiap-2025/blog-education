@@ -1,0 +1,26 @@
+name: Run and Check Tests
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  test:
+    name: 🧪 Run Tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build (TypeScript)
+        run: npm run build
+
+      - name: Run unit & integration tests
+        env:
+          JWT_SECRET: ${{ secrets.JWT_SECRET }}
+        run: npm run test

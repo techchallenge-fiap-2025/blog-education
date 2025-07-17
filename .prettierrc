@@ -1,0 +1,16 @@
+{
+  "printWidth": 80,
+  "singleQuote": true,
+  "trailingComma": "all",
+  "tabWidth": 2,
+  "arrowParens": "always",
+  "endOfLine": "lf",
+  "semi": true,
+  "jsxSingleQuote": true,
+  "prettier.experimentalTernaries": true,
+  "prettier.quoteProps": "preserve",
+  "prettier.jsxSingleQuote": true,
+  "prettier.bracketSpacing": true,
+  "prettier.requireConfig": true
+
+}
