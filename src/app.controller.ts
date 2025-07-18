@@ -18,9 +18,4 @@ export class AppController {
     return 'Olá docker!';
   }
 
-    @Get('')
-  @IsPublic()
-  getHelloDocker2(): string {
-    return 'Olá docker2!';
-  }
 }
