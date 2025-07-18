@@ -29,3 +29,6 @@ jobs:
 
       - name: Push Docker Image
         run: docker push $DOCKER_USERNAME/blog-education:latest
+
+      - name: Trigger Deploy on Render
+        run: curl -X POST ${{ secrets.RENDER_DEPLOY_HOOK }}
