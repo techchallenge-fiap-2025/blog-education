@@ -14,7 +14,7 @@ import { ConfigModule } from '@nestjs/config';
       isGlobal: true,
     }),
     PostsModule,
-    MongooseModule.forRoot(String(process.env.MONGODB_URI)),
+    MongooseModule.forRoot(String(process.env.MONGO_URI)),
     UserModule,
     AuthModule,
   ],

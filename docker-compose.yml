@@ -10,6 +10,6 @@ services:
     volumes:
       - .:/app
     environment:
-      - MONGODB_URI=${MONGODB_URI}
+      - MONGO_URI=${MONGO_URI}
       - JWT_SECRET=${JWT_SECRET}
       - PORT=3000

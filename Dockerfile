@@ -13,8 +13,8 @@ ARG JWT_SECRET
 
 ENV MONGO_URI=$MONGO_URI
 
-RUN echo "MONGO_URI=${MONGO_URI}}" > .env
-RUN echo "JWT_SECRET=${JWT_SECRET}}" > .env
+RUN echo "MONGO_URI=${MONGO_URI}" > .env
+RUN echo "JWT_SECRET=${JWT_SECRET}" > .env
 
 RUN npm i -g pnpm
 
