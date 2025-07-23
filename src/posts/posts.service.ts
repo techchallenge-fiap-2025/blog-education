@@ -23,7 +23,7 @@ export class PostsService {
       const post = await this.postRepository.findOne(id);
 
       if (!post) {
-        throw new NotFoundException(`Post com ID "${id}" não encontrado.`);
+        throw new NotFoundException(`Post com "${id}" não encontrado.`);
     }
 
     return post;

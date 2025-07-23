@@ -7,6 +7,7 @@ import { Model } from 'mongoose';
 import { getModelToken, MongooseModule } from '@nestjs/mongoose';
 import { PostRepository } from './repository/post.repository';
 import { CreatePostDto } from './dto/create-post.dto';
+import { NotFoundException } from '@nestjs/common';
 
 describe('PostsService integration tests', () => {
   let module: TestingModule;
@@ -99,9 +100,7 @@ describe('PostsService integration tests', () => {
   });
 
   it('should return error when finding one post by invalid id', async () => {
-    await expect(service.findOne('1')).rejects.toThrow(
-      'Cast to ObjectId failed for value "1" (type string) at path "_id" for model "Post"',
-    );
+    await expect(service.findOne('1')).rejects.toThrow(NotFoundException);
   });
 
   it('should update a valid post', async () => {
