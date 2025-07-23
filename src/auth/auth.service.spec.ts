@@ -91,6 +91,6 @@ describe('AuthService integration tests', () => {
       email: '6dL0t@example.com',
       password: '559',
     };
-    await expect(service.signIn(loginInput)).rejects.toThrow('Unauthorized');
+    await expect(service.signIn(loginInput)).rejects.toThrow('Credenciais inválidas (e-mail ou senha incorretos).');
   });
 });

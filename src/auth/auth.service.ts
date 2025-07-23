@@ -16,7 +16,7 @@ export class AuthService {
     // TODO: Refatorar esta lógica para usar `bcrypt.compare()` e garantir que as
     // senhas sejam armazenadas como HASH no banco de dados, e não como texto puro.
     if (user?.password !== login.password) {
-      throw new UnauthorizedException('Unauthorized');
+      throw new UnauthorizedException('Credenciais inválidas (e-mail ou senha incorretos).');
     }
     const payload = {
       sub: user.id,
