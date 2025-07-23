@@ -16,10 +16,8 @@ export class AuthController {
     status: 200,
     description: 'Login bem-sucedido. Retorna um token de acesso (access_token).',
   })
-  @ApiResponse({
-    status: 401,
-    description: 'Credenciais inválidas (e-mail ou senha incorretos).',
-  })
+  @ApiResponse({ status: 400, description: 'Dados de entrada inválidos (ex: e-mail em formato incorreto).' })
+  @ApiResponse({ status: 401, description: 'Credenciais inválidas (e-mail ou senha incorretos).' })
   @Post('login')
   signIn(@Body() signInDto: LoginDto) {
     return this.authService.signIn(signInDto);

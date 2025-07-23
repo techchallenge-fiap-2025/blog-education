@@ -17,13 +17,22 @@ export class AppController {
     type: String, 
   })
   getHello(): string {
-    return this.appService.getHello();
+    return "Bem-vindo(a) à API Blog Education! A aplicação está online.";
   }
 
   @Get('/docker')
   @IsPublic()
-  getHelloDocker(): string {
-    return 'Olá docker!';
+  @ApiOperation({
+    summary: 'Verifica o status da API (Health Check) no Docker',
+    description: 'Endpoint usado por serviço de nuvem para verificar se o contêiner da aplicação está online.',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'A API está respondendo corretamente.',
+    type: String, 
+  })
+  getDockerHealthCheck(): string {
+    return 'OK';
   }
 
 }

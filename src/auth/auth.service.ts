@@ -1,4 +1,4 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { Injectable, UnauthorizedException} from '@nestjs/common';
 import { UserService } from '../user/user.service';
 import { LoginDto } from './dto/login.dto';
 import { JwtService } from '@nestjs/jwt';
@@ -13,8 +13,10 @@ export class AuthService {
   async signIn(login: LoginDto): Promise<{ token: string }> {
     const user = await this.usersService.findByEmail(login.email);
 
+    // TODO: Refatorar esta lógica para usar `bcrypt.compare()` e garantir que as
+    // senhas sejam armazenadas como HASH no banco de dados, e não como texto puro.
     if (user?.password !== login.password) {
-      throw new UnauthorizedException();
+      throw new UnauthorizedException('Credenciais inválidas');
     }
     const payload = {
       sub: user.id,

@@ -34,6 +34,7 @@ export class UserController {
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Lista todos os usuários (apenas para professores)' })
   @ApiResponse({ status: 200, description: 'Lista de usuários retornada com sucesso.' })
+  @ApiResponse({ status: 401, description: 'Não autenticado.' })
   @ApiResponse({ status: 403, description: 'Acesso negado. Recurso apenas para professores.' })
   findAll() {
     return this.userService.findAll();
@@ -45,6 +46,7 @@ export class UserController {
   @ApiOperation({ summary: 'Busca um usuário específico pelo ID (apenas para professores)' })
   @ApiParam({ name: 'id', description: 'O ID do usuário a ser atualizado.' })
   @ApiResponse({ status: 200, description: 'Dados do usuário retornados com sucesso.' })
+  @ApiResponse({ status: 401, description: 'Não autenticado.' })
   @ApiResponse({ status: 403, description: 'Acesso negado.' })
   @ApiResponse({ status: 404, description: 'Usuário não encontrado.' })
   findOne(@Param('id') id: string) {
@@ -57,6 +59,8 @@ export class UserController {
   @ApiOperation({ summary: 'Atualiza um usuário (apenas para professores)' })
   @ApiParam({ name: 'id', description: 'O ID do usuário a ser atualizado.' }) 
   @ApiResponse({ status: 200, description: 'Usuário atualizado com sucesso.' })
+  @ApiResponse({ status: 400, description: 'Dados de atualização inválidos.' })
+  @ApiResponse({ status: 401, description: 'Não autenticado.' })
   @ApiResponse({ status: 403, description: 'Acesso negado.' })
   @ApiResponse({ status: 404, description: 'Usuário não encontrado.' })
   update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
@@ -69,6 +73,7 @@ export class UserController {
   @ApiOperation({ summary: 'Remove um usuário (apenas para Professores)' })
   @ApiParam({ name: 'id', description: 'O ID do usuário a ser atualizado.' }) 
   @ApiResponse({ status: 200, description: 'Usuário removido com sucesso.' })
+  @ApiResponse({ status: 401, description: 'Não autenticado.' })
   @ApiResponse({ status: 403, description: 'Acesso negado.' })
   @ApiResponse({ status: 404, description: 'Usuário não encontrado.' })
   remove(@Param('id') id: string) {
