@@ -1,9 +1,10 @@
 services:
   app:
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
     container_name: app
     command: npm run start:dev
-    dockerfile: Dockerfile.dev 
     ports:
       - '3000:3000'
     depends_on:
