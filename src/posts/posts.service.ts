@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
 import { PostRepository } from './repository/post.repository';
@@ -6,30 +6,44 @@ import { PostRepository } from './repository/post.repository';
 @Injectable()
 export class PostsService {
   constructor(private readonly postRepository: PostRepository) {}
-  create(createPostDto: CreatePostDto) {
+  async create(createPostDto: CreatePostDto) {
     return this.postRepository.create(createPostDto);
   }
 
-  findAll(limit: number, page: number) {
+  async findAll(limit: number, page: number) {
     return this.postRepository.findAll(limit, page);
   }
 
-  findAllPublished() {
+  async findAllPublished() {
     return this.postRepository.findAllPublished();
   }
 
-  findOne(id: string) {
-    return this.postRepository.findOne(id);
+  async findOne(id: string) {
+    try {
+      const post = await this.postRepository.findOne(id);
+
+      if (!post) {
+        throw new NotFoundException(`Post com "${id}" não encontrado.`);
+    }
+
+    return post;
+
+    } catch (error) {
+      throw new NotFoundException(`Post com ID "${id}" não encontrado.`);
+    }
   }
 
-  update(id: string, updatePostDto: UpdatePostDto) {
+  async update(id: string, updatePostDto: UpdatePostDto) {
+    await this.findOne(id);
     return this.postRepository.update(id, updatePostDto);
   }
+
   search(term: string) {
     return this.postRepository.search(term);
   }
 
-  remove(id: string) {
+  async remove(id: string) {
+    await this.findOne(id);
     return this.postRepository.remove(id);
   }
 }
