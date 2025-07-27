@@ -35,10 +35,4 @@ export class AppController {
     return 'OK';
   }
 
-  @Get('/apresentacao')
-  @IsPublic()
-  getHello2(): string {
-    return 'Apresentação deploy';
-  }
-
 }
