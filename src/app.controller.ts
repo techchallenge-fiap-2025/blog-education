@@ -4,7 +4,7 @@ import { IsPublic } from './decorators/is-public';
 
 @Controller()
 export class AppController {
-  constructor(private readonly appService: AppService) {}
+  constructor(private readonly appService: AppService) { }
 
   @Get()
   @IsPublic()
@@ -16,6 +16,12 @@ export class AppController {
   @IsPublic()
   getHelloDocker(): string {
     return 'Olá docker!';
+  }
+
+  @Get('/apresentacao')
+  @IsPublic()
+  getHello2(): string {
+    return 'Apresentação deploy';
   }
 
 }
