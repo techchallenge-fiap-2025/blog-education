@@ -21,7 +21,6 @@ Pessoas da rede pública de educação, mais especificamente dois agentes:
 
 | Nome | E-mail |
 | --- | --- |
-| Matheus Melo Santos | [lopiu15963@gmail.com](mailto:lopiu15963@gmail.com) |
 | Lucas Piran | [lucas13piran@gmail.com](mailto:lucas13piran@gmail.com) |
 | Felipe Ragne Silveira | [frsilveira01@outlook.com](mailto:frsilveira01@outlook.com) |
 | Lais Taine de Oliveira | [lais.taine@gmail.com](mailto:lais.taine@gmail.com) |
@@ -57,14 +56,14 @@ O sistema é composto pelos seguintes componentes principais:
 
 O diagrama abaixo ilustra como os componentes se comunicam.
 
-![Fluxo da Aplicação.png](Fluxo_da_Aplicao.png)
+![Fluxo da Aplicação.png](fluxo_da_api.png)
 
 1. **Requisição HTTP e roteamento:** Um usuário autenticado envia uma requisição HTTP para um endpoint da API (ex: POST /posts), incluindo seu Token JWT no cabeçalho Authorization. A requisição chega na aplicação e é direcionada para o *Controller*. Neste ponto, os *Guards* atuam, validando a autenticação e as permissões.
 2. **Lógica de Negócio:** o *Controller* chama o *Service* correspondente para executar a tarefa principal (ex: "criar um novo post") e preparar a operação no *banco de dados*.
 3. **Acesso aos Dados:** o *Service*, que contém a lógica de negócio, interage com a camada de persistência (o *Repository*, que por sua vez se comunica com o *banco*) para consultar ou gravar dados no *Banco de Dados*.
 4. **Retorno dos Dados:** o *Repository* executa a query no *MongoDB, que* retorna a informação solicitada de volta para o *Service*.
 5. **Retorno do Resultado:** o *Service* pode processar ou transformar os dados recebidos do banco e então retorna o resultado final para o *Controller*.
-6. **Resposta Final:** o *Controller* recebe o resultado do *Service*, formata a resposta HTTP (status code e corpo em JSON) e a envia de volta para o *Cliente* (*Repository -> Service -> Controller*>*Cliente*).
+6. **Resposta Final:** o *Controller* recebe o resultado do *Service*, formata a resposta HTTP (status code e corpo em JSON) e a envia de volta para o *Cliente* (*Repository -> Service -> Controller -> Cliente*).
 
 ### **Justificativas das Decisões de Arquitetura**
 
@@ -79,156 +78,142 @@ Por atributos técnicos e/ou familiaridade, algumas decisões foram tomadas, com
 
 ## **Tecnologias Utilizadas**
 
-| **Backend:** Node.js, Express e NestJS |
-| --- |
-| **Linguagem**: TypeScript |
-| **Banco de Dados:** MongoDB com Mongoose (ODM) |
-| **Testes:** Jest |
-| **Conteinerização:** Docker e Docker Compose |
-| **CI/CD**: GitHub Actions e Render |
-| **Qualidade de código:** ESLint, Prettier |
+**Backend:** Node.js, Express e NestJS 
+
+**Linguagem**: TypeScript 
+
+**Banco de Dados:** MongoDB com Mongoose (ODM) 
+
+**Testes:** Jest 
+
+**Conteinerização:** Docker e Docker Compose 
+
+**CI/CD**: GitHub Actions e Render 
+
+**Qualidade de código:** ESLint, Prettier 
 
 
 
 ## **Setup e Instalação**
 
-### **Em Ambiente Local**
-
 Siga os passos abaixo para executar o projeto em seu ambiente local.
 
-**Pré-requisitos:**
+#### Pré-requisitos:
 
-- Node.js (v18 ou superior)
+- Node.js (v18 ou superior)  
+- Git  
+- MongoDB  
 - Editor de código (ex: VS Code)
-- Git
-- MongoDB
 
-**Passos:**
+#### Passos:
 
-1. **Conectar o Banco de Dados**
-    
-    Abra o MongoDB em seu computador. Ele deve sugerir o seguinte endereço: mongodb://localhost:27017. Clique em connect.
-    
-2. **Abra uma pasta no editor de código e clone o repositório:**
-    
-    Com a pasta aberta, abra o terminal e clone o repositório:
-    
-    `git clone https://github.com/techchallenge-fiap-2025/blog-education`
-    
-    `cd blog-education`
-    
-3. **Crie o arquivo de configuração .env:**
-    
-    Siga o modelo .env.example ou copie e cole:
-    
-    `JWT_SECRET=SEGREDO_PARA_TESTE_12345` 
-    
-    `MONGO_URI=mongodb://localhost:27017/blog-education`
-    
-    `PORT=3010`
-    
+1. **Conecte-se ao Banco de Dados**  
+   Certifique-se de que o MongoDB esteja rodando localmente em:  
+   `mongodb://localhost:27017`  
+   Você pode usar interfaces como o MongoDB Compass para facilitar a visualização.
+
+2. **Clone o repositório:**
+   ```bash
+   git clone https://github.com/techchallenge-fiap-2025/blog-education
+   cd blog-education
+   ```
+
+3. **Configure o arquivo `.env`**  
+   Com base no modelo `.env.example`, crie um arquivo `.env` na raiz do projeto:
+   ```env
+   JWT_SECRET=SEGREDO_PARA_TESTE_12345
+   MONGO_URI=mongodb://localhost:27017/blog-education
+   PORT=3010
+   ```
+
 4. **Instale as dependências:**
-    
-    `npm install`
-    
-5. **Rode a aplicação:**
-    
-    development
-    
-    `npm run start`
-    
-    watch mode
-    
-    `npm run start:dev`
-    
-    production mode
-    
-    `npm run start:prod`
-    
-6. **Teste a validação da sua API**
-    
-    Acesse:
-    
-    - **API Status:** [http://localhost:3010/](http://localhost:3010/)
-    - **Swagger UI:** http://localhost:3010/api
-    
+   ```bash
+   npm install
+   ```
 
-### **Em Ambiente de Produção**
+5. **Execute a aplicação:**
+   - **Modo desenvolvimento (com auto reload):**
+     ```bash
+     npm run start:dev
+     ```
+   - **Modo produção:**
+     ```bash
+     npm run start:prod
+     ```
 
-Siga os passos abaixo para executar o projeto em produção.
+6. **Acesse a API localmente:**
+   - **Status da API:** [http://localhost:3010](http://localhost:3010)  
+   - **Swagger UI:** [http://localhost:3010/api](http://localhost:3010/api)
 
-**Pré-requisitos:**
+### Em Ambiente de Produção (Docker)
 
-- Git
-- Docker Desktop
-- Editor de Código (ex: VS Code)
+#### Pré-requisitos:
 
-**Passos:**
+- Git  
+- Docker Desktop  
+- Editor de código (ex: VS Code)
 
-1. **Abra uma pasta no editor de código e clone o repositório:**
-    
-    Com a pasta aberta, abra o terminal e clone o repositório:
-    
-    `git clone https://github.com/techchallenge-fiap-2025/blog-education`
-    
-    `cd blog-education`
-    
-2. **Crie o arquivo de configuração .env:**
-    
-    Siga o modelo .env.example ou copie e cole:
-    
-    `JWT_SECRET=SEGREDO_PARA_TESTE_12345` 
-    
-    `MONGO_URI=mongodb://localhost:27017/blog-education`
-    
-    `PORT=3010`
-    
-3. **Construir e Rodar os Contêineres:**
-    
-    No seu terminal, dentro da pasta do projeto, rode:
-    
-    `docker-compose up --build`
-    
-    - comando lê e executa arquivo docker-compose.yml.
-4. **Teste a validação da API:**
-    
-    Acesse:
-    
-    - **API Status:** [http://localhost:3010/](http://localhost:3010/)
-    - **Swagger UI:** [http://localhost:3010/api](http://localhost:3010/api)
-5. **Produção:**
-    
-    A cada atualização, rode o comando:
-    
-    `git push origin main`
-    
-    O GitHub Actions automatiza o processo:
-    
-    - Aciona o workflow configurado no arquivo;
-    - Cria uma imagem a partir dos comandos do Dockerfile;
-    - Faz o Login e envia a imagem;
-    - Aciona os testes de segurança (CI/CD);
-    - Faz o Deploy no Render
-6. **Verifique a atualização do Deploy em:**
-    
-    [https://blog-education-latest-efws.onrender.com/api](https://blog-education-latest-efws.onrender.com/api)
-    
+#### Passos:
 
-### **Para rodar os testes**
+1. **Clone o repositório:**
+   ```bash
+   git clone https://github.com/techchallenge-fiap-2025/blog-education
+   cd blog-education
+   ```
 
-Em seu terminal, digite:
+2. **Configure o arquivo `.env`**  
+   ```env
+   JWT_SECRET=SEGREDO_PARA_TESTE_12345
+   MONGO_URI=mongodb://localhost:27017/blog-education
+   PORT=3010
+   ```
 
-- unit tests
+3. **Construa e rode os contêineres:**
+   ```bash
+   docker-compose up --build
+   ```
 
-   `npm run test`
+   Isso irá:
+   - Construir as imagens Docker com base no `Dockerfile`  
+   - Subir a aplicação e conectar ao banco de dados  
+   - Disponibilizar os endpoints localmente
 
-- e2e tests
+4. **Acesse a API em produção local:**
+   - [http://localhost:3010](http://localhost:3010)  
+   - [http://localhost:3010/api](http://localhost:3010/api)
 
-   `npm run test:e2e`
+5. **Deploy automatizado com GitHub Actions:**  
+   Ao rodar:
+   ```bash
+   git push origin main
+   ```
+   É disparado um fluxo de CI/CD que:
+   - Constrói a imagem Docker  
+   - Executa testes automatizados  
+   - Publica a imagem no ambiente de produção  
+   - Realiza o deploy automaticamente na plataforma Render
 
-- test coverage
+6. **Verifique o deploy online em:**  
+   [https://blog-education-latest-efws.onrender.com/api](https://blog-education-latest-efws.onrender.com/api)
 
-   `npm run test:cov`
+### Rodando os Testes
+
+Execute os comandos abaixo para validar o sistema:
+
+- **Testes unitários:**
+  ```bash
+  npm run test
+  ```
+
+- **Testes end-to-end (e2e):**
+  ```bash
+  npm run test:e2e
+  ```
+
+- **Cobertura de testes:**
+  ```bash
+  npm run test:cov
+  ```
 
 
 
@@ -237,13 +222,13 @@ Em seu terminal, digite:
 Foi adotada uma estrutura de testes para API a partir do framework Jest, que vem integrado nativamente com o NestJS.
 
 
-**Testes Unitários:** Focados em testar a menor unidade de lógica de forma isolada, como um método específico em um service (.spec.ts).
+**Testes Unitários:** Focados em testar a menor unidade de lógica de forma isolada, como um método específico em um service `.spec.ts`.
 
-**Testes End-to-End (E2E):** Utilizados para testar o fluxo completo da aplicação, desde a requisição HTTP até a resposta final (.e2e-spec.ts).
+**Testes End-to-End (E2E):** Utilizados para testar o fluxo completo da aplicação, desde a requisição HTTP até a resposta final `.e2e-spec.ts`.
 
 ### **Relatório**
 
-A partir do comando do Jest (npm run test:cov) é possível avaliar a cobertura por meio do relatório gerado. A suíte de testes da aplicação alcançou uma cobertura geral de aproximadamente 63% das linhas de código.
+A partir do comando do Jest `npm run test:cov` é possível avaliar a cobertura por meio do relatório gerado. A suíte de testes da aplicação alcançou uma cobertura geral de aproximadamente 63% das linhas de código.
 
 ![Relatório de Cobertura.png](relatorio_de_cobertura.png)
 
@@ -352,26 +337,20 @@ O projeto **Blog Education** possibilitou aplicar os conceitos aprendidos na Fas
 
 O processo colaborativo e o uso de ferramentas de apoio foram fundamentais para superar desafios técnicos e entregar uma solução funcional e com propósito social.
 
-### Contatos
 
-[lopiu15963@gmail.com](mailto:lopiu15963@gmail.com)
 
----
+# Contatos
+
 
 [lucas13piran@gmail.com](mailto:lucas13piran@gmail.com)
 
----
 
 [frsilveira01@outlook.com](mailto:frsilveira01@outlook.com)
 
----
 
 [lais.taine@gmail.com](mailto:lais.taine@gmail.com)
 
----
 
 [pedrojulianoquimelo@outlook.com](mailto:pedrojulianoquimelo@outlook.com)
-
----
 
 ---
