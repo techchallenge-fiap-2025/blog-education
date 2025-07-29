@@ -25,6 +25,7 @@ Pessoas da rede pública de educação, mais especificamente dois agentes:
 | Felipe Ragne Silveira | [frsilveira01@outlook.com](mailto:frsilveira01@outlook.com) |
 | Lais Taine de Oliveira | [lais.taine@gmail.com](mailto:lais.taine@gmail.com) |
 | Pedro Juliano Quimelo | [pedrojulianoquimelo@outlook.com](mailto:pedrojulianoquimelo@outlook.com) |
+| Matheus Melo Santos | [lopiu15963@gmail.com](mailto:lopiu15963@gmail.com) |
 
 
 
@@ -352,5 +353,8 @@ O processo colaborativo e o uso de ferramentas de apoio foram fundamentais para 
 
 
 [pedrojulianoquimelo@outlook.com](mailto:pedrojulianoquimelo@outlook.com)
+
+
+[lopiu15963@gmail.com](mailto:lopiu15963@gmail.com)
 
 ---
