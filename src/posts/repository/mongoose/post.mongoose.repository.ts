@@ -5,6 +5,7 @@ import { Post } from '../../schemas/posts.schema';
 import { Model } from 'mongoose';
 import { UpdatePostDto } from 'src/posts/dto/update-post.dto';
 import { CreatePostDto } from 'src/posts/dto/create-post.dto';
+import { NotFoundException } from '@nestjs/common';
 
 export class PostMongooseRepository implements PostRepository {
   constructor(
@@ -34,10 +35,15 @@ export class PostMongooseRepository implements PostRepository {
     await this.postModel.deleteOne({ _id: id }).exec();
   }
   async search(term: string): Promise<IPost[]> {
+    const regex = new RegExp(term, 'i');
     const docs = await this.postModel
-      .find({ $or: [{ title: term }, { description: term }] })
+      .find({ $or: [{ title: regex }, { description: regex }] })
       .exec();
 
-    return docs.map((doc) => doc.toObject() as IPost);
+    if (!docs.length) {
+      throw new NotFoundException(`Nenhum post encontrado para "${term}"`);
+    }
+
+    return docs.map((d) => d.toObject());
   }
 }

@@ -16,12 +16,13 @@ import { SearchPostDto } from './dto/search-post';
 import { Roles } from '../decorators/roles';
 import { UserRole } from '../user/schemas/models/user.interface';
 import { RolesGuard } from '../auth/roles.guard';
-import { 
+import {
   ApiBearerAuth,
   ApiOperation,
   ApiParam,
+  ApiQuery,
   ApiResponse,
-  ApiTags, 
+  ApiTags,
 } from '@nestjs/swagger';
 
 @ApiTags('Posts')
@@ -38,8 +39,14 @@ export class PostsController {
   @Post()
   @ApiOperation({ summary: 'Cria um novo post (apenas para professores).' })
   @ApiResponse({ status: 201, description: 'Post criado com sucesso.' })
-  @ApiResponse({ status: 400, description: 'Os dados enviados na requisição são inválidos.' })
-  @ApiResponse({ status: 401, description: 'Não autenticado. É necessário um token de acesso válido.' })
+  @ApiResponse({
+    status: 400,
+    description: 'Os dados enviados na requisição são inválidos.',
+  })
+  @ApiResponse({
+    status: 401,
+    description: 'Não autenticado. É necessário um token de acesso válido.',
+  })
   @ApiResponse({ status: 403, description: 'Acesso negado (requer login).' })
   @Roles(UserRole.Teacher)
   async create(@Body() createPostDto: CreatePostDto) {
@@ -52,9 +59,18 @@ export class PostsController {
   @Get('all')
   @Roles(UserRole.Teacher)
   @ApiOperation({ summary: 'Lista todos os posts (publicados ou não).' })
-  @ApiResponse({ status: 200, description: 'Lista de posts retornada com sucesso.' })
-  @ApiResponse({ status: 401, description: 'Não autenticado. É necessário um token de acesso válido.' })
-  @ApiResponse({ status: 403, description: 'Acesso negado (ex: você não é um professor).' })
+  @ApiResponse({
+    status: 200,
+    description: 'Lista de posts retornada com sucesso.',
+  })
+  @ApiResponse({
+    status: 401,
+    description: 'Não autenticado. É necessário um token de acesso válido.',
+  })
+  @ApiResponse({
+    status: 403,
+    description: 'Acesso negado (ex: você não é um professor).',
+  })
   async findAll(limit: number, page: number) {
     return this.postsService.findAll(limit, page);
   }
@@ -64,9 +80,31 @@ export class PostsController {
   //  posts disponíveis na página principal.
   @Get('published')
   @ApiOperation({ summary: 'Lista todos os posts publicados.' })
-  @ApiResponse({ status: 200, description: 'Lista de posts retornada com sucesso.' })
+  @ApiResponse({
+    status: 200,
+    description: 'Lista de posts retornada com sucesso.',
+  })
   async findAllPublished() {
     return this.postsService.findAllPublished();
+  }
+
+  //   GET /posts/search - Busca de Posts:
+  // ▪
+  // Este endpoint permitirá a busca de posts por palavras-
+  // chave. Os usuários poderão passar uma query string com o
+  // termo de busca e o sistema retornará uma lista de posts que
+  // contêm esse termo no título ou conteúdo.
+  @Get('search')
+  @ApiOperation({ summary: 'Busca posts por um termo no título ou conteúdo' })
+  @ApiResponse({
+    status: 200,
+    description:
+      'Retorna uma lista de posts que correspondem ao termo de busca.',
+  })
+  @ApiResponse({ status: 404, description: 'Post não encontrado.' })
+  @ApiQuery({ name: 'term', required: true })
+  async search(@Query('term') term: string) {
+    return this.postsService.search(term);
   }
 
   //   GET /posts/:id - Leitura de Posts:
@@ -75,7 +113,10 @@ export class PostsController {
   @Get(':id')
   @ApiOperation({ summary: 'Busca um post específico pelo ID' })
   @ApiParam({ name: 'id', description: 'O ID do post a ser buscado.' })
-  @ApiResponse({ status: 200, description: 'Dados do post retornado com sucesso' })
+  @ApiResponse({
+    status: 200,
+    description: 'Dados do post retornado com sucesso',
+  })
   @ApiResponse({ status: 404, description: 'Post não encontrado.' })
   async findOne(@Param('id') id: string) {
     return this.postsService.findOne(id);
@@ -85,13 +126,24 @@ export class PostsController {
   // deverão fornecer o ID do post que desejam editar e os novos
   // dados no corpo da requisição.
   @Patch(':id')
-  @ApiOperation({ summary: 'Atualiza um post específico (somente professores)' })
+  @ApiOperation({
+    summary: 'Atualiza um post específico (somente professores)',
+  })
   @ApiParam({ name: 'id', description: 'O ID do post a ser atualizado.' })
   @ApiResponse({ status: 200, description: 'Post atualizado com sucesso.' })
-  @ApiResponse({ status: 400, description: 'Os dados enviados na requisição são inválidos.' })
-  @ApiResponse({ status: 403, description: 'Acesso negado (ex: você não é um professor).' })
+  @ApiResponse({
+    status: 400,
+    description: 'Os dados enviados na requisição são inválidos.',
+  })
+  @ApiResponse({
+    status: 403,
+    description: 'Acesso negado (ex: você não é um professor).',
+  })
   @ApiResponse({ status: 404, description: 'Post não encontrado.' })
-  @ApiResponse({ status: 401, description: 'Não autenticado. É necessário um token de acesso válido.' })
+  @ApiResponse({
+    status: 401,
+    description: 'Não autenticado. É necessário um token de acesso válido.',
+  })
   @Roles(UserRole.Teacher)
   async update(@Param('id') id: string, @Body() updatePostDto: UpdatePostDto) {
     return this.postsService.update(id, updatePostDto);
@@ -105,23 +157,12 @@ export class PostsController {
   @ApiResponse({ status: 200, description: 'Post removido com sucesso.' })
   @ApiResponse({ status: 403, description: 'Acesso negado.' })
   @ApiResponse({ status: 404, description: 'Post não encontrado.' })
-  @ApiResponse({ status: 401, description: 'Não autenticado. É necessário um token de acesso válido.' })
+  @ApiResponse({
+    status: 401,
+    description: 'Não autenticado. É necessário um token de acesso válido.',
+  })
   @Roles(UserRole.Teacher)
   async remove(@Param('id') id: string) {
     return this.postsService.remove(id);
-  }
-
-  //   GET /posts/search - Busca de Posts:
-  // ▪
-  // Este endpoint permitirá a busca de posts por palavras-
-  // chave. Os usuários poderão passar uma query string com o
-  // termo de busca e o sistema retornará uma lista de posts que
-  // contêm esse termo no título ou conteúdo.
-  @Get('search')
-  @ApiOperation({ summary: 'Busca posts por um termo no título ou conteúdo' })
-  @ApiResponse({ status: 200, description: 'Retorna uma lista de posts que correspondem ao termo de busca.' })
-  @ApiResponse({ status: 404, description: 'Post não encontrado.' })
-  async search(@Query() dto: SearchPostDto) {
-    return this.postsService.search(dto.term);
   }
 }

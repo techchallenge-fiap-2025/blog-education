@@ -24,11 +24,11 @@ export class PostsService {
 
       if (!post) {
         throw new NotFoundException(`Post com "${id}" não encontrado.`);
-    }
+      }
 
-    return post;
-
+      return post;
     } catch (error) {
+      throw error;
       throw new NotFoundException(`Post com ID "${id}" não encontrado.`);
     }
   }
@@ -38,7 +38,7 @@ export class PostsService {
     return this.postRepository.update(id, updatePostDto);
   }
 
-  search(term: string) {
+  async search(term: string) {
     return this.postRepository.search(term);
   }
 
