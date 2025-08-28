@@ -12,7 +12,6 @@ import {
 import { PostsService } from './posts.service';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
-import { SearchPostDto } from './dto/search-post';
 import { Roles } from '../decorators/roles';
 import { UserRole } from '../user/schemas/models/user.interface';
 import { RolesGuard } from '../auth/roles.guard';
@@ -57,7 +56,6 @@ export class PostsController {
   // postagens criadas, facilitando a gestão do conteúdo.
 
   @Get('all')
-  @Roles(UserRole.Teacher)
   @ApiOperation({ summary: 'Lista todos os posts (publicados ou não).' })
   @ApiResponse({
     status: 200,
