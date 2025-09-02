@@ -35,4 +35,13 @@ export class CreatePostDto {
   @IsNotEmpty()
   @IsBoolean()
   isPublished: boolean;
+
+  @ApiProperty({
+    description: 'O autor do post',
+    example: 'João da Silva',
+    required: true,
+  })
+  @IsNotEmpty()
+  @IsString()
+  author: string;
 }

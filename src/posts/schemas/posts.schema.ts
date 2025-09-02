@@ -22,6 +22,9 @@ export class Post {
   @Prop({ default: false })
   isPublished: boolean;
 
+  @Prop({ required: true })
+  author: string;
+
   @Prop({ default: Date.now })
   createdAt: Date;
 }
