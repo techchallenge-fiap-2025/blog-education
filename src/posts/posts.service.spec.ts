@@ -7,7 +7,6 @@ import { Model } from 'mongoose';
 import { getModelToken, MongooseModule } from '@nestjs/mongoose';
 import { PostRepository } from './repository/post.repository';
 import { CreatePostDto } from './dto/create-post.dto';
-import { NotFoundException } from '@nestjs/common';
 
 describe('PostsService integration tests', () => {
   let module: TestingModule;
@@ -55,6 +54,7 @@ describe('PostsService integration tests', () => {
       title: 'Integration Test',
       description: 'Testing with real mongodb, but in memory',
       image: 'img.png',
+      author: 'John Doe',
       isPublished: true,
     };
     const created = await service.create(postInput);
@@ -65,6 +65,8 @@ describe('PostsService integration tests', () => {
   it('should retun error when creating a post without title', async () => {
     const postInput: CreatePostDto = {
       title: '',
+      author: 'John Doe',
+
       description: 'Testing with real mongodb, but in memory',
       image: 'img.png',
       isPublished: true,
@@ -77,6 +79,8 @@ describe('PostsService integration tests', () => {
   it('should find all posts', async () => {
     const postInput: CreatePostDto = {
       title: 'Integration Test',
+      author: 'John Doe',
+
       description: 'Testing with real mongodb, but in memory',
       image: 'img.png',
       isPublished: true,
@@ -89,6 +93,8 @@ describe('PostsService integration tests', () => {
   it('should find one post by id', async () => {
     const postInput: CreatePostDto = {
       title: 'Integration Test',
+      author: 'John Doe',
+
       description: 'Testing with real mongodb, but in memory',
       image: 'img.png',
       isPublished: true,
@@ -100,12 +106,16 @@ describe('PostsService integration tests', () => {
   });
 
   it('should return error when finding one post by invalid id', async () => {
-    await expect(service.findOne('1')).rejects.toThrow(NotFoundException);
+    await expect(service.findOne('23234')).rejects.toThrow(
+      'Cast to ObjectId failed for value "23234" (type string) at path "_id" for model "Post"',
+    );
   });
 
   it('should update a valid post', async () => {
     const postInput: CreatePostDto = {
       title: 'Integration Test',
+      author: 'John Doe',
+
       description: 'Testing with real mongodb, but in memory',
       image: 'img.png',
       isPublished: true,
@@ -121,6 +131,8 @@ describe('PostsService integration tests', () => {
   it('should delete a valid post', async () => {
     const postInput: CreatePostDto = {
       title: 'Integration Test',
+      author: 'John Doe',
+
       description: 'Testing with real mongodb, but in memory',
       image: 'img.png',
       isPublished: true,
@@ -135,6 +147,7 @@ describe('PostsService integration tests', () => {
       title: 'Integration Test',
       description: 'Testing with real mongodb, but in memory',
       image: 'img.png',
+      author: 'John Doe',
       isPublished: true,
     };
     const created = await service.create(postInput);

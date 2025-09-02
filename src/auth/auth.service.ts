@@ -1,4 +1,4 @@
-import { Injectable, UnauthorizedException} from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { UserService } from '../user/user.service';
 import { LoginDto } from './dto/login.dto';
 import { JwtService } from '@nestjs/jwt';
@@ -10,13 +10,18 @@ export class AuthService {
     private readonly jwtService: JwtService,
   ) {}
 
-  async signIn(login: LoginDto): Promise<{ token: string }> {
+  async signIn(login: LoginDto): Promise<{
+    token: string;
+    user: { name: string; email: string; role: string };
+  }> {
     const user = await this.usersService.findByEmail(login.email);
 
     // TODO: Refatorar esta lógica para usar `bcrypt.compare()` e garantir que as
     // senhas sejam armazenadas como HASH no banco de dados, e não como texto puro.
     if (user?.password !== login.password) {
-      throw new UnauthorizedException('Credenciais inválidas (e-mail ou senha incorretos).');
+      throw new UnauthorizedException(
+        'Credenciais inválidas (e-mail ou senha incorretos).',
+      );
     }
     const payload = {
       sub: user.id,
@@ -24,26 +29,14 @@ export class AuthService {
       role: user.role,
       email: user.email,
     };
-    return { token: await this.jwtService.signAsync(payload) };
+    const returnedUser = {
+      name: user.name,
+      email: user.email,
+      role: user.role,
+    };
+    return {
+      token: await this.jwtService.signAsync(payload),
+      user: returnedUser,
+    };
   }
-
-  // create(createAuthDto: CreateAuthDto) {
-  //   return 'This action adds a new auth';
-  // }
-
-  // findAll() {
-  //   return `This action returns all auth`;
-  // }
-
-  // findOne(id: number) {
-  //   return `This action returns a #${id} auth`;
-  // }
-
-  // update(id: number, updateAuthDto: UpdateAuthDto) {
-  //   return `This action updates a #${id} auth`;
-  // }
-
-  // remove(id: number) {
-  //   return `This action removes a #${id} auth`;
-  // }
 }
