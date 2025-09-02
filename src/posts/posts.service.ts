@@ -29,7 +29,6 @@ export class PostsService {
       return post;
     } catch (error) {
       throw error;
-      throw new NotFoundException(`Post com ID "${id}" não encontrado.`);
     }
   }
 
